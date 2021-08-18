@@ -1,0 +1,30 @@
+syntax = "proto3";
+option go_package = "/main";
+message ReqGetRoom{
+    uint32 RoomId = 1;
+    uint32 Num = 2;
+}
+message RetGetRoom{
+    uint32 RoomId = 1;
+    string Addr = 2;
+}
+message ReqGetRoomList{
+
+}
+message RetGetRoomList{
+    repeated uint32 RoomIds = 1;
+    repeated uint32 Nums = 2;
+}
+// message Player{
+//     uint64 PlayId = 1;
+//     string Account = 2;
+// }
+// message Room{
+//     uint64 RoomId = 1;
+//     uint32 PlayerNum = 2;
+//     repeated Player Players = 3;
+// }
+service RCenter{
+    rpc GetRoomList (ReqGetRoomList) returns(RetGetRoomList);
+    rpc GetRoom (ReqGetRoom) returns (RetGetRoom);
+}

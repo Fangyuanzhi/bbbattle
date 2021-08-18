@@ -1,0 +1,14 @@
+syntax = "proto3";
+option go_package = "/main";
+message ReqPlayer{
+    string UserId = 1;
+    string Name = 2;
+}
+message ResPlayer{
+    string RoomId = 1;
+    string Addr = 2;
+    string Token = 3;
+}
+// service Logic{
+//     rpc GetRoomInfo (ReqPlayer) returns (ResPlayer);
+// }

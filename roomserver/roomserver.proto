@@ -1,0 +1,125 @@
+syntax = "proto3";
+option go_package = "/main";
+enum RoomCmd{
+    RoomCmdNone = 0;
+    Login = 1;
+    HeartBeat = 2;
+    Action = 3;
+    AddDelPlayer = 4;//添加删除用户
+    UpdatePlayer = 5;//更新用户状态,这里为重量
+    BatchUpdatePlayer = 6;//批量更新
+    //GameProgressNotice = 7;
+    Move = 7;
+    BatchMove = 8;
+    SpawnFood = 9;
+    Reborn = 10;//玩家重生
+    Start = 11;//开始游戏
+    End = 12;//结束游戏
+    MapInit = 13;
+    AddFood = 14;
+    DelFood = 15;
+    RoomNotice = 16;
+    EatFood = 17;
+    EatPlayer = 18;
+}
+
+enum RoomStateType{
+    Open = 0;
+    Close = 1;
+}
+enum RoomCloseType{
+    NoBody = 0;
+}
+// message Commond{
+//     int32 cmd = 1;
+//     string data = 2;
+// }
+message ReqRoomLogin{
+    string name = 1;
+    string token = 2;
+}
+message RetRoomLogin{
+    bool Ok = 1;
+    uint64 PlayerId = 2;
+    uint32 RoomId = 3;
+    uint32 Time = 4;
+    uint32 MapId = 5;
+    uint32 MinStartNum = 6;
+}
+message RetErrorMsgCmd {
+    uint32 RetCode = 1;//错误码
+}
+message MsgVector{
+    float X = 1;
+    float Y = 2;
+}
+//移动才会触发吃事件，因此一起发过去
+message MsgMove{
+    uint64 PlayerId = 1;
+    MsgVector Pos = 2;
+    MsgVector Rotation = 3;
+    //float Weight  = 4;
+    float Duration = 4;
+    //uint32 Duration = 4;
+}
+message MsgBatchMove{
+    repeated MsgMove Moves = 1;
+}
+message MsgWeight{
+    uint64 PlayerId = 1;
+    float Weight = 2;
+}
+message MsgBatchWeight{
+    repeated MsgWeight Weights = 1;
+}
+message MsgPlayer{
+    string RoomId = 1;
+    uint64 PlayerId = 2;
+    string name = 3;
+    MsgVector Pos = 4;
+    MsgVector Rotation = 5;
+    bool IsOffline = 6;
+}
+message MsgAddDelPlayer {
+    repeated MsgPlayer PlayerList = 1;//玩家id
+    repeated uint32 Ids = 2;//所在的roomid
+}
+//某个room内的信息
+message MsgRoom {
+    repeated MsgPlayer Players = 1;
+    uint32 Length = 2;
+    uint32 Width = 3;
+}
+//食物信息
+message MsgFood{
+    uint64 Id = 1;
+    MsgVector Pos = 2;
+}
+message BatchMsgFood{
+    repeated MsgFood FoodList = 1;
+}
+//protoc --go_out=. --go_opt=paths=source_relative proto/hello.proto
+// message MsgAddFood{
+//     MsgFood Foods = 1;
+// }
+// message MsgDelFood{
+//     MsgFood Foods = 1;
+// }
+//与物体互动的操作
+// enum ActionType{
+
+// }
+// message MsgAction {
+
+// }
+
+//游戏结束
+//谁赢了
+// enum SpaceEndType{
+
+// }
+
+//为什么赢
+// enum SpaceEndWithType{
+
+// }

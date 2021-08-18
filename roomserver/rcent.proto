@@ -1,0 +1,54 @@
+syntax = "proto3";
+option go_package = "/main";
+enum RcenterCmd{
+    RcenterUnused = 0;
+    UpdateOnlinePlayNum = 2;
+    UpdateRoomList = 3;
+}
+message ReqGetRoom{
+    string RoomId = 1;
+}
+message RetGetRoom{
+    string RoomId = 1;
+    string Addr = 2;
+}
+
+
+message ReqDelRoom{
+    string RoomId = 1;
+}
+message RetDelRoom{
+}
+message ReqGetRoomList{
+
+}
+message RetGetRoomList{
+    repeated string RoomIds = 1;
+}
+message ReqUpdateRoomList{
+    repeated string RoomIds = 1;
+    repeated int32 Nums = 2;
+}
+message RetUpdateRoomList{
+
+}
+message ReqGetToken{
+    string Name = 1;
+}
+message RetGetToken{
+    string Token = 1;
+}
+message ReqRemovePlayer{
+    string PlayId = 1;
+    string RoomId = 2;
+}
+message RetRemovePlayer{
+}
+service RCenter{
+    rpc GetRoomList (stream ReqGetRoomList) returns(stream RetGetRoomList);
+    rpc GetRoom(stream ReqGetRoom) returns (stream RetGetRoom);
+    rpc DelRoom(stream ReqDelRoom) returns (stream RetDelRoom);
+    rpc UpdateRoomList(stream ReqUpdateRoomList) returns(stream RetUpdateRoomList);
+    rpc GetToken (stream ReqGetToken) returns (stream RetGetToken);
+    rpc RemovePlayer(stream ReqRemovePlayer) returns(stream RetRemovePlayer);
+}
